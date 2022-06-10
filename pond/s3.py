@@ -47,7 +47,7 @@ def put_object_to_s3(dataset_id: str, filepath: str) -> tuple:
     checksum = get_sha1sum_from_filepath(filepath)[:8]
     object_key = dataset_id + '_' + checksum
     with open(filepath, 'rb') as file:
-        s3.upload_fileobj(file, getenv('POND_S3_BUCKET_NAME'), object_key)
+        s3.upload_fileobj(file, getenv('S3_BUCKET_NAME'), object_key)
     return object_key, checksum
 
 

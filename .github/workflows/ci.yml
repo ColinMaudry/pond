@@ -31,5 +31,12 @@ jobs:
           pipenv install --dev
       - name: run tests
         working-directory: ./
+        env:
+          S3_API_ENDPOINT: https://s3.fr-par.scw.cloud
+          S3_REGION_NAME: 'fr-par'
+          S3_BUCKET_NAME: pond-test-data
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+          LOCAL_DATA_DIR: '.'
         run: |
           pipenv run pytest
