@@ -31,7 +31,7 @@ def get_object_from_s3(object_key: str) -> str:
     s3 = get_s3_session()
     filepath = join(getenv('LOCAL_DATA_DIR'), object_key)
     print("The file path: ", filepath)
-    s3.download_file(getenv('POND_S3_BUCKET_NAME'), object_key, filepath)
+    s3.download_file(getenv('S3_BUCKET_NAME'), object_key, filepath)
     return filepath
 
 
