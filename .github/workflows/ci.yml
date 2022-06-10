@@ -1,0 +1,33 @@
+name: CI
+on: [push]
+runs-on: ubuntu-latest
+strategy:
+  matrix:
+    python-version: [3.8, 3.9, 3.10]
+steps:
+  - uses: actions/checkout@v2
+  - name: set up python ${{ matrix.python-version }}
+    uses: actions/setup-python@v2
+    with:
+      python-version: ${{ matrix.python-version }}
+  - name: install pipenv
+    run: |
+      python -m pip install --upgrade pip
+      pip install pipenv
+  - name: cache pipenv
+    id: cache-pipenv
+    uses: actions/cache@v2
+    with:
+      path: .venv
+      key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('api/Pipfile.lock') }}
+  - name: install dependencies
+    working-directory: ./
+    if: steps.cache-pipenv.outputs.cache-hit != 'true'
+    env:
+      PIPENV_VENV_IN_PROJECT: 1
+    run: |
+      pipenv install --dev
+  - name: run tests
+    working-directory: ./
+    run: |
+      pipenv run pytest
