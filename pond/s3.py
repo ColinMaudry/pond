@@ -53,4 +53,4 @@ def put_object_to_s3(dataset_id: str, filepath: str) -> tuple:
 
 def delete_object_from_s3(object_key: str):
     s3 = get_s3_session()
-    s3.delete_object(Bucket=getenv('POND_S3_BUCKET_NAME'), Key=object_key)
+    s3.delete_object(Bucket=getenv('S3_BUCKET_NAME'), Key=object_key)
