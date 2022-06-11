@@ -24,13 +24,12 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('api/Pipfile.lock') }}
       - name: install dependencies
         working-directory: ./
-        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        # if: steps.cache-pipenv.outputs.cache-hit != 'true'
         env:
           PIPENV_VENV_IN_PROJECT: 1
         run: |
           pipenv install --dev
-      - name: run tests
-        working-directory: ./
+      - name: run tests with coverage
         env:
           S3_API_ENDPOINT: https://s3.fr-par.scw.cloud
           S3_REGION_NAME: 'fr-par'
@@ -39,4 +38,11 @@ jobs:
           S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
           LOCAL_DATA_DIR: '.'
         run: |
-          pipenv run pytest
+            pipenv run coverage run -m pytest
+            pipenv run coverage xml -o coverage.xml
+      - name: send coverage data
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: pipenv run coverage report

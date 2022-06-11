@@ -12,6 +12,7 @@ botocore = "*"
 
 [dev-packages]
 pytest = "*"
+coverage = "*"
 
 [requires]
 python_version = "3"
