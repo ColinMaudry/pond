@@ -1,7 +1,7 @@
 import boto3
 from dotenv import load_dotenv
 from os import getenv
-from os.path import join
+from os.path import join, basename
 
 from .utils import *
 
@@ -35,17 +35,31 @@ def get_object_from_s3(object_key: str) -> str:
     return filepath
 
 
-def put_object_to_s3(dataset_id: str, filepath: str) -> tuple:
+def put_object_to_s3(filepath: str, **kwargs) -> tuple:
     """Upload a new file to the S3 bucket
 
-    :param dataset_id: The id of the dataset the file belongs to
     :param filepath: The path of the file to upload
+    :keyword dataset_id: The id of the dataset the file belongs to
+
     :return: S3 object key, sha1 checksum
+    :rtype: tuple
     """
+
+    if 'dataset_id' in kwargs:
+        dataset_id = kwargs['dataset_id']
+    else:
+        dataset_id = None
+
     s3 = get_s3_session()
 
     checksum = get_sha1sum_from_filepath(filepath)[:8]
-    object_key = dataset_id + '_' + checksum
+    if dataset_id and filepath:
+        object_key = dataset_id + '_' + checksum
+    elif filepath:
+        object_key = basename(filepath)
+    else:
+        print('You must at least provide a filepath.')
+        raise ValueError
     with open(filepath, 'rb') as file:
         s3.upload_fileobj(file, getenv('S3_BUCKET_NAME'), object_key)
     return object_key, checksum
