@@ -24,7 +24,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.python-version }}-pipenv-${{ hashFiles('api/Pipfile.lock') }}
       - name: install dependencies
         working-directory: ./
-        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        # if: steps.cache-pipenv.outputs.cache-hit != 'true'
         env:
           PIPENV_VENV_IN_PROJECT: 1
         run: |
