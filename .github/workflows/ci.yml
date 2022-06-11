@@ -41,7 +41,7 @@ jobs:
             pipenv run coverage run -m pytest
             pipenv run coverage xml -o coverage.xml
       - name: send coverage data
-        uses: paambaati/codeclimate-action@3.0.0
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
