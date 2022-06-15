@@ -1,4 +1,4 @@
-from pond import *
+from puddle import *
 from rdflib import Literal, URIRef
 from rdflib.namespace import RDF, DCAT
 

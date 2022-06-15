@@ -1,6 +1,6 @@
 from os.path import join as joinpath
 import botocore.exceptions
-from pond import *
+from puddle import *
 
 test_filename = 'TEST_a1d537d6'
 
