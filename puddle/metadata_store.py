@@ -10,6 +10,12 @@ import os
 
 load_dotenv()
 
+PREFIXES = """
+PREFIX : <uri:com:github:ColinMaudry:puddle:>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+"""
+
 
 def create_new_store() -> rdflib.Graph:
     """ Create a blank metadata store in memory.
@@ -19,6 +25,10 @@ def create_new_store() -> rdflib.Graph:
     """
     graph = Graph()
     graph.bind('dcat', DCAT)
+    data = PREFIXES + """
+    :defaultCatalog a dcat:Catalog .
+    """
+    graph.parse(data=data, format='turtle')
     return graph
 
 
