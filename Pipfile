@@ -9,6 +9,7 @@ pandas = "*"
 python_dotenv = "*"
 boto3 = "*"
 botocore = "*"
+requests = "*"
 
 [dev-packages]
 pytest = "*"
