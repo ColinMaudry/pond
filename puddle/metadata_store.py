@@ -10,10 +10,12 @@ import os
 
 load_dotenv()
 
-PREFIXES = """
-PREFIX : <uri:com:github:ColinMaudry:puddle:>
+PREFIXES = f"""
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
-
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX spdx: <http://spdx.org/rdf/terms#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <{getenv('METADATA_URI_PREFIX')}>
 """
 
 
@@ -26,7 +28,7 @@ def create_new_store() -> rdflib.Graph:
     graph = Graph()
     graph.bind('dcat', DCAT)
     data = PREFIXES + """
-    :defaultCatalog a dcat:Catalog .
+    : a dcat:Catalog .
     """
     graph.parse(data=data, format='turtle')
     return graph
